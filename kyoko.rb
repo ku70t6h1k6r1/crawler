@@ -3,7 +3,37 @@ require 'open-uri'
 require 'date'
 require 'mysql2'
 
-client = Mysql2::Client.new(:host => "localhost", :username => "pma", :password => "M656n26n5pma", :database => "crawler")
+#######################
+
+class SqlSet
+	def insert(client,media_name, url, title, body, crawler_name, etc1, etc5)
+		client.query(
+			"INSERT INTO crawler_raw_data (
+				 media_name
+				,url
+				,title
+				,body
+				,crawler_name
+				,etc1
+				,etc5
+				)
+			VALUES(
+				#{media_name}
+				,#{url}
+				,#{title}
+				,#{body}
+				,#{crawler_name}
+				,#{etc1}
+				,#{etc5}
+				)
+			) "
+		)
+	end
+end
+
+
+#######################
+client = Mysql2::Client.new(:host => "localhost", :username => "", :password => "", :database => "")
 url = ""
 title = ""
 body = ""
@@ -45,30 +75,4 @@ while time < 10
 	time = time + 1
 end
 
-#######################
 
-class SqlSet
-	def insert(client,media_name, url, title, body, crawler_name, etc1, etc5)
-		client.query(
-			"INSERT INTO crawler_raw_data (
-				 media_name
-				,url
-				,title
-				,body
-				,crawler_name
-				,etc1
-				,etc5
-				)
-			VALUES(
-				#{media_name}
-				,#{url}
-				,#{title}
-				,#{body}
-				,#{crawler_name}
-				,#{etc1}
-				,#{etc5}
-				)
-			) "
-		)
-	end
-end
