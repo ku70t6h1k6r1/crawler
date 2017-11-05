@@ -12,12 +12,17 @@ while time < 10
 	begin
 		dtStr = dt.strftime('%Y%m%d')
 		url = "http://kyoko-np.net/" + dtStr + "01" + ".html" 
-	
+		
 		doc = Nokogiri.HTML(open(url))
 
-		doc.xpath('//article').each do |element|
-			puts element.inner_text
-		end
+		title = doc.xpath('//title').inner_text
+		body = doc.xpath('//article').inner_text
+		publishedDate = doc.css('.article-update').inner_text
+
+		puts title
+		puts body
+		puts publishedDate
+		
 		dt = dt - 1
 	rescue => e
 		puts e
