@@ -1,17 +1,18 @@
 require 'nokogiri'
 require 'open-uri'
 require 'date'
+require 'mysql2'
 
 class SqlSet
-	def insert(url, cat_url)
+	def insert(client, url, cat_url)
 		client.query(
-			"INSERT INTO crawler_raw_data (
+			"INSERT INTO karapaia_url (
 				 url
 				 ,cat_url
 				)
 			VALUES(
-				"#{url}"
-				,"#{cat_url}"
+				\"#{url}\"
+				,\"#{cat_url}\"
 				)
 			"
 		)
@@ -19,17 +20,17 @@ class SqlSet
 end
 
 #########################################################################
-client = Mysql2::Client.new(:host => "localhost", username => "", :password => "", :database => "")
+@client = Mysql2::Client.new(:host => "localhost", :username => "", :password => "", :database => "")
 
-time = 0
+time = 1
 loop{
 	@url = ""
 	@linkUrl = ""
 	
 	begin
-		@url = "http://karapaia.com/archives/cat_50034584.html?p=#{time}"
+		@url = "http://karapaia.com/archives/cat_50034578.html?p=#{time}"
 
-		doc = Nokogiri.HTML(open(url))
+		doc = Nokogiri.HTML(open(@url))
 
 		i = 0
 		doc.xpath('//div[@class="widget widget-archive"]/h3/a').each do |element|
@@ -39,7 +40,7 @@ loop{
 			
 			begin
 				sql = SqlSet.new
-				sql.insert(@linkUrl , @url)
+				sql.insert(@client, @linkUrl , @url)
 			rescue 
 			end
 		end
