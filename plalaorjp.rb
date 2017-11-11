@@ -6,19 +6,9 @@ require 'mysql2'
 #######################
 
 class SqlSet
-	def select(client){
-		client.query(
-			"
-				SELECT url 
-				FROM karapaia_url
-				LIMIT 10
-			"
-		)
-	}
-
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -43,7 +33,7 @@ end
 
 
 #######################
-@client = Mysql2::Client.new(:host => "localhost", :username => "", :password => "", :database => "")
+@client = Mysql2::Client.new(:host => "", :username => "", :password => "", :database => "")
 @sql = SqlSet.new
 @url = ""
 @title = ""
@@ -69,8 +59,9 @@ begin
 				@etc5 = ""
 				@body = b.inner_text
 				begin
-					@sql.insert(@client, @media_name,@url, @title, @body, @crawler_name, @etc1, @etc5)
-				rescue
+					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
+				rescue =>e
+					#@sql.insert(@client,@media_name,@url, @title, @body, @crawler_name, @etc1, "error")
 				end
 							
 			end
