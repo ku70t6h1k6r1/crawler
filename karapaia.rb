@@ -6,19 +6,22 @@ require 'mysql2'
 #######################
 
 class SqlSet
-	def select(client){
+	def select(client)
 		client.query(
 			"
-				SELECT url 
-				FROM karapaia_url
-				LIMIT 10
+				SELECT url.url
+				FROM `karapaia_url` url
+				WHERE NOT EXISTS
+					(SELECT DISTINCT url
+					FROM  `crawler_raw_data` log 
+ 						WHERE url.url = log.url)
 			"
 		)
-	}
+	end
 
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -43,7 +46,7 @@ end
 
 
 #######################
-@client = Mysql2::Client.new(:host => "localhost", :username => "", :password => "", :database => "")
+@client = Mysql2::Client.new(:host => "", :username => "", :password => "", :database => "")
 @url = ""
 @title = ""
 @body = ""
@@ -54,14 +57,19 @@ end
 
 
 
-sql = SqlSet.new
+@sql = SqlSet.new
 
-results = sql.select(@client)
+results = @sql.select(@client)
 
 results.each do |url|
-	begin
-		@url = url
+	@url = ""
+	@title = ""
+	@body = ""
+	@etc1 = ""
+	@etc5 = ""	
 
+	begin
+		@url = url["url"]
 		doc = Nokogiri.HTML(open(@url))
 
 		@title = doc.css('.widget-header').inner_text
@@ -70,6 +78,11 @@ results.each do |url|
 		end
 		@etc1 = doc.css('.date')[0].inner_text
 		@etc5 = ""
+
+		puts "#########################"
+		@body = @body.slice(0, @body.index("if"))
+		@body = @client.escape(@body)
+		#puts @body
 	rescue => e
 		@title = ""
 		@body = ""
@@ -79,10 +92,11 @@ results.each do |url|
 	
 	
 	begin	
-		sql.insert(@client, @media_name,@url, @title, @body, @crawler_name, @etc1, @etc5)
+		@sql.insert(@client, @media_name,@url, @title, @body, @crawler_name, @etc1, @etc5)
 	rescue => e
+		puts e
 	end
 
-	sleep(2)
+	sleep(1.5)
 end
 
