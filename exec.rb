@@ -6,29 +6,27 @@ require 'date'
 dt = DateTime.now
 
 time = 0
-while time < 10
-	dt = dt - 1
+#while time < 10
 	
 	begin
-		dtStr = dt.strftime('%Y%m%d')
-		url = "http://kyoko-np.net/" + dtStr + "01" + ".html" 
+		#dtStr = dt.strftime('%Y%m%d')
+		@url = "http://www5.plala.or.jp/zatsugaku/entame.html"
 		
-		doc = Nokogiri.HTML(open(url))
+		doc = Nokogiri.HTML(open(@url))
 
-		title = doc.xpath('//title').inner_text
-		body = doc.xpath('//article').inner_text
-		publishedDate = doc.css('.article-update').inner_text
-
-		puts title
-		puts body
-		puts publishedDate
+		#title = doc.xpath('//section').inner_text
+		doc.xpath("//ul[@class='submenu']/li/a").each do |u|
+			puts u["href"]		
+		end
 		
-		dt = dt - 1
+
+		puts 
+		
+
+		
 	rescue => e
 		puts e
-		dt = dt - 1
-		retry
 	end
 	
 	time = time + 1
-end
+#end
