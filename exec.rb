@@ -10,20 +10,15 @@ time = 0
 	
 	begin
 		#dtStr = dt.strftime('%Y%m%d')
-		@url = "http://www5.plala.or.jp/zatsugaku/entame.html"
+		@url = "http://sfushigi.com/sitemaps/"
 		
 		doc = Nokogiri.HTML(open(@url))
 
 		#title = doc.xpath('//section').inner_text
-		doc.xpath("//ul[@class='submenu']/li/a").each do |u|
-			puts u["href"]		
+		doc.xpath("//ul[@id='sitemap_list']/li//ul/li/a").each do |u|
+			puts u["href"]
 		end
-		
-
-		puts 
-		
-
-		
+				
 	rescue => e
 		puts e
 	end
