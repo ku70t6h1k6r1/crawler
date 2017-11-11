@@ -8,7 +8,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -21,7 +21,7 @@ class SqlSet
 				\"#{m_n}\"
 				,\"#{u}\"
 				,\"#{t}\"
-				,\"#{b}\"
+				,LEFT(\"#{b}\", 9999)
 				,\"#{c_n}\"
 				,\"#{e1}\"
 				,\"#{e5}\"
@@ -49,33 +49,37 @@ begin
 
 
 	doc.xpath("//ul[@id='sitemap_list']/li//ul/li/a").each do |u|
-		puts "################################"
 	
 		catUrl =  u["href"]
 		@url = catUrl
 		
 		begin
 			doc2 = Nokogiri.HTML(open(catUrl))
-			@body = doc2.xpath("//div[@id = 'the-content']").inner_text
 				@body = ""
+				@body = doc2.xpath("//div[@id = 'the-content']").inner_text
+				@body = @client.escape(@body)
+
 				@title = ""
 				@etc5 = ""
 				
 				@title = doc2.xpath("//div[@id = 'the-content']/h2").inner_text
-				@body = b.inner_text
-				@body = @body.slice(0,9999)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
-					@sql.insert(@client,@media_name, @url, @title, @body, @crawler_name, @etc1, "error")
+					puts e
+					#puts "inError"
+					#@sql.insert(@client,@media_name, @url, @title, @body, @crawler_name, @etc1, "error")
 				end
 		rescue =>e
+			puts e
 			begin
 				@etc5 = "error"
 				@sql.insert(@client, @media_name,@url, @title, @body, @crawler_name, @etc1, @etc5)
-			rescue
+			rescue => e
+				puts e
 			end
 		end
+		sleep(1.5)
 	end
 rescue => e
 	puts e
