@@ -55,6 +55,7 @@ while time < 21
 			@url =  u["href"].to_s
 			@title = ""
 			@title = u.inner_text.strip
+			sleep(1.5)
 			begin
 				doc2 = Nokogiri.HTML(open(@url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 				@body = ""
