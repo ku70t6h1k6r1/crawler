@@ -9,7 +9,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, dt, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -53,7 +53,9 @@ while time < 492
 
 		doc.xpath("//h1[@class='entry-title']/a").each do |u|
 			@url = u["href"]
+			puts @url
 			begin
+				sleep(2)
 				doc2 = Nokogiri.HTML(open(@url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 				#puts "dt:" + Time.parse(doc2.xpath("//p[@class='entry-date']")[0]).strftime('%Y-%m-%d')
@@ -66,6 +68,8 @@ while time < 492
 				@dt = Time.parse(doc2.xpath("//p[@class='entry-date']")[0]).strftime('%Y-%m-%d')
 				@title = doc2.xpath("//h1[@class='entry-title']")[0].inner_text
 				@body = doc2.xpath("//section[@class='entry-content']")[0].inner_text
+				#@body = @body.force_encoding('UTF-8').scrub{|x|''}
+				@body = @body.encode('SJIS', 'UTF-8', invalid: :replace, undef: :replace, replace: '').encode('UTF-8')
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @dt, @etc5)
 				rescue =>e
