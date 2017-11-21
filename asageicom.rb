@@ -9,7 +9,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -45,10 +45,10 @@ end
 @etc5 = ""
 
 time = 1
-while time < 2
+while time < 1570
 	
 	begin
-		@tempUrl = "http://www.asagei.com/page/1"
+		@tempUrl = "http://www.asagei.com/page/#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//p[@class='more-link-wrap']/a").each do |u|
@@ -67,7 +67,7 @@ while time < 2
 				@etc5 = ""
 				@etc1 = doc2.xpath("//span[@class='entry-date']")[0].inner_text
 				@title = doc2.xpath("//h1[@class='entry-title']")[0].inner_text
-				@body = ddoc2.xpath("//div[@class='entry-content f16px']")[0].inner_text
+				@body = doc2.xpath("//div[@class='entry-content f16px']")[0].inner_text
 				#@body = @body.encode('SJIS', 'UTF-8', invalid: :replace, undef: :replace, replace: '').encode('UTF-8')
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
