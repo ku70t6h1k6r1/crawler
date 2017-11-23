@@ -9,7 +9,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -34,7 +34,7 @@ end
 
 
 #######################
-@client = Mysql2::Client.new(:host => "", :username => "", :password => "", :database => "")
+@client = Mysql2::Client.new(:host => "localhost", :username => "pma", :password => "M656n26n5pma", :database => "crawler")
 @sql = SqlSet.new
 @url = ""
 @title = ""
@@ -45,7 +45,7 @@ end
 @etc5 = ""
 
 time = 1
-while time < 9 #6418
+while time < 6418
 	
 	begin
 		@tempUrl = "http://www.elle.co.jp/culture/celebgossip/(offset)/#{time}"
@@ -90,5 +90,5 @@ while time < 9 #6418
 	rescue => e
 		puts e
 	end
-	time = time + 1
+	time = time + 8
 end
