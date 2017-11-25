@@ -9,7 +9,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -65,6 +65,8 @@ while time < 935
 				@etc1 = doc2.xpath("//p[@class='article-disclosed-at']")[0].inner_text
 				@title = doc2.xpath("//h1[@class='article-title']")[0].inner_text
 				@body = doc2.xpath("//div[@class='article-contents']")[0].inner_text.gsub(/\n/,"")
+				begin
+					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
 					puts e
 				end	
