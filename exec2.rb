@@ -31,11 +31,11 @@ gateway.open() do |local_port|
   )
 
  i = 1
- clientEC2.query('SELECT serial, media_name, url, title, body, crawler_name FROM crawler_data_cleaned;').each do |reader|
+ clientEC2.query('SELECT serial, media_name, url, title, body, crawler_name FROM crawler_data_cleaned WHERE serial > 120871; ').each do |reader|
 	@body = ""
 	@body = client.escape(reader["body"])
 	begin
-		client.query("INSERT INTO crawler_data_cleaned (etc1, media_name, url, title, body, crawler_name)
+		client.query("INSERT INTO test_crawler_data_cleaned (etc1, media_name, url, title, body, crawler_name)
 		VALUES (\"#{reader["serial"]}\", \"#{reader["media_name"]}\", \"#{reader["url"]}\", \"#{reader["title"]}\", \"#{@body}\", \"#{reader["crawler_name"]}\");")
 	rescue => e
 		puts e
