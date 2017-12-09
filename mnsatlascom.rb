@@ -34,7 +34,7 @@ end
 
 
 #######################
-@client = Mysql2::Client.new(:host => "localhost", :username => "pma", :password => "M656n26n5pma", :database => "crawler")
+@client = Mysql2::Client.new(:host => "", :username => "", :password => "", :database => "")
 @sql = SqlSet.new
 @url = ""
 @title = ""
