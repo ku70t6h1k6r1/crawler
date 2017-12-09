@@ -9,7 +9,7 @@ require 'mysql2'
 class SqlSet
 	def insert(client,m_n, u, t, b, c_n, e1, e5)
 		client.query(
-			" INSERT INTO crawler_raw_data_for_test (
+			" INSERT INTO crawler_raw_data (
 				  media_name
 				, url
 				, title
@@ -34,7 +34,7 @@ end
 
 
 #######################
-@client = Mysql2::Client.new(:host => "", :username => "", :password => "", :database => "")
+@client = Mysql2::Client.new(:host => "localhost", :username => "pma", :password => "M656n26n5pma", :database => "crawler")
 @sql = SqlSet.new
 @url = ""
 @title = ""
@@ -46,7 +46,7 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 107
 	begin
 		@tempUrl = "http://mnsatlas.com/?cat=17&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
@@ -65,6 +65,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
@@ -91,9 +92,9 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 256
 	begin
-		@tempUrl = "http://mnsatlas.com/?cat=23&paged=1/#{time}"
+		@tempUrl = "http://mnsatlas.com/?cat=23&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//h4[@class='title']/a").each do |u|
@@ -110,6 +111,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
@@ -136,9 +138,9 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 79
 	begin
-		@tempUrl = "http://mnsatlas.com/?cat=25&paged=1/#{time}"
+		@tempUrl = "http://mnsatlas.com/?cat=25&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//h4[@class='title']/a").each do |u|
@@ -155,6 +157,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
@@ -181,9 +184,9 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 17
 	begin
-		@tempUrl = "http://mnsatlas.com/?cat=3&paged=1/#{time}"
+		@tempUrl = "http://mnsatlas.com/?cat=3&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//h4[@class='title']/a").each do |u|
@@ -200,6 +203,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
@@ -226,9 +230,9 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 88
 	begin
-		@tempUrl = "http://mnsatlas.com/?cat=33&paged=1/#{time}"
+		@tempUrl = "http://mnsatlas.com/?cat=33&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//h4[@class='title']/a").each do |u|
@@ -245,6 +249,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
@@ -271,9 +276,9 @@ end
 
 #######################
 time = 1
-while time < 2
+while time < 31
 	begin
-		@tempUrl = "http://mnsatlas.com/?cat=6&paged=1/#{time}"
+		@tempUrl = "http://mnsatlas.com/?cat=6&paged=#{time}"
 		doc = Nokogiri.HTML(open(@tempUrl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read)
 
 		doc.xpath("//h4[@class='title']/a").each do |u|
@@ -290,6 +295,7 @@ while time < 2
 				@etc1 = doc2.xpath("//li[@class='date']")[0].inner_text
 				@title = doc2.xpath("//div[@id='single_title']/h2").inner_text
 				@body = doc2.xpath("//div[@class='post clearfix']").inner_text.gsub(/\n/,"")
+				@body = @client.escape(@body)
 				begin
 					@sql.insert(@client, @media_name, @url, @title, @body, @crawler_name, @etc1, @etc5)
 				rescue =>e
